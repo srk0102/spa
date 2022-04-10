@@ -16,6 +16,7 @@ class ArrayModuleQueue:
         self.data = arr.array("i", [] * ArrayModuleQueue.DEFAULT_CAPACITY)
         self.size = 0
         self.front = 0
+        self.v = None
 
     def __len__(self):
         return self.size
@@ -35,11 +36,15 @@ class ArrayModuleQueue:
     # add your cade here
     def remove_second_element(self):
         # replace "pass" with your code to remove second element in the queue
-        pass
+        self.v = self.data[1]
+        del self.data[1]
+        self.size -= 1
 
-    def insert_before_Last(self, v):
+    def insert_before_Last(self):
         # replace "pass" with your code to insert the element before last element in the queue
-        pass
+        self.data.insert(self.size-1, self.v)
+        self.v = None
+        self.size += 1
 
 # ================================================================
 # Second Scenario: Simple queue implemented using array-based (list)
@@ -51,6 +56,7 @@ class SimpleQueue:
         self.data = [None] * SimpleQueue.DEFAULT_CAPACITY
         self.size = 0
         self.front = 0
+        self.v = None
 
     def __len__(self):
         return self.size
@@ -83,11 +89,15 @@ class SimpleQueue:
     # add your cade here
     def remove_second_element(self):
         # replace "pass" with your code to remove second element in the queue
-        pass
+        self.v = self.data[1]
+        del self.data[1]
+        self.size -= 1
 
-    def insert_before_Last(self, v):
+    def insert_before_Last(self):
         # replace "pass" with your code to insert the element before last element in the queue
-        pass
+        self.data.insert(self.size -1, self.v)
+        self.v = None
+        self.size += 1
 
 
 # ================================================================
@@ -100,6 +110,7 @@ class CircularQueue:
         self.data = [None] * CircularQueue.DEFAULT_CAPACITY
         self.size = 0
         self.front = 0
+        self.v = None
 
     def __len__(self):
         return self.size
@@ -134,11 +145,15 @@ class CircularQueue:
     # add your cade here
     def remove_second_element(self):
         # replace "pass" with your code to remove second element in the queue
-        pass
+        self.v = self.data[1]
+        del self.data[1]
+        self.size -= 1
 
-    def insert_before_last(self, e):
+    def insert_before_last(self):
         # replace "pass" with your code to insert the element before last element in the queue
-        pass
+        self.data.insert(self.size -1, self.v)
+        self.v = None
+        self.size += 1
 
 
 # ================================================================
@@ -157,7 +172,8 @@ class SinglyLinkedList:
         """Create an empty queue."""
         self.head = None
         self.tail = None
-        self.size = 0  # number of queue elements
+        self.size = 0
+        self.v = None  # number of queue elements
 
     def __len__(self):
         """Return the number of elements in the queue."""
@@ -186,11 +202,21 @@ class SinglyLinkedList:
     # add your cade here
     def remove_second_element(self):
         # replace "pass" with your code to remove second element in the queue
-        pass
+        self.size -= 1
+        current = self.head
+        for i in range(0):
+            current = current.next
+        temp = current.next
+        current.next = current.next.next
+        self.v = temp.element
 
-    def insert_before_last(self, e):
+
+    def insert_before_last(self):
         # replace "pass" with your code to insert the element before last element in the queue
-        pass
+        current = self.head
+        for i in range(self.size-2):
+            current = current.next
+        current.next = self.Node(self.v, current.next)
 
 
 # ================================================================
@@ -201,19 +227,18 @@ class DoublyLinkedBase:
     # nested _Node class
     class Node:
 
-        def __init__(self, element, prev, next):  # initialize node's fields
+        def __init__(self, element):  # initialize node's fields
             self.element = element  # user's element
-            self.prev = prev  # previous node reference
-            self.next = next  # next node reference
+            self.prev = None  # previous node reference
+            self.next = None  # next node reference
 
     # -------------------------- list constructor --------------------------
     def __init__(self):
         """Create an empty list."""
-        self.header = self.Node(None, None, None)
-        self.trailer = self.Node(None, None, None)
-        self.header.next = self.trailer  # trailer is after header
-        self.trailer.prev = self.header  # header is before trailer
-        self.size = 0  # number of elements
+        self.head = None
+        self.last = None
+        self.size = 0
+        self.v = []
 
     # -------------------------- public accessors --------------------------
 
@@ -228,27 +253,47 @@ class DoublyLinkedBase:
     # -------------------------- nonpublic utilities --------------------------
 
     def print_queue(self):
-        n = self.header.next
-        while n != self.trailer:
+        n = self.head
+        while n is not None:
             print(n.element, end=" ")
             n = n.next
 
-    def insert_between(self, e, predecessor, successor):
+    def insert_between(self, e):
         """Add element e between two existing nodes and return new node."""
-        newest = self.Node(e, predecessor, successor)  # linked to neighbors
-        predecessor.next = newest
-        successor.prev = newest
+        if self.last is None:
+            self.head = self.Node(e)
+            self.last = self.head
+        else:
+            self.last.next = self.Node(e)
+            self.last.next.prev=self.last
+            self.last = self.last.next
         self.size += 1
-        return newest
 
     # add your cade here
-    def remove_second_element(self):
-        # replace "pass" with your code to remove second element in the queue
-        pass
+    def deque(self):
+        if self.head is None:
+            return None
+        else:
+            temp= self.head.element
+            self.head = self.head.next
+            self.head.prev=None
+            return temp
 
-    def insert_before_last(self, e):
+    def remove_second_element(self):
+        # replace "pass" with your code to remove second element in the 
+        for i in range(self.size-1):
+            self.v.append(self.deque())
+
+    def insert_before_last(self):
         # replace "pass" with your code to insert the element before last element in the queue
-        pass
+        arr = self.v
+        temp = arr[1]
+        arr[1] = arr[-1]
+        arr[-1] = temp
+        for i in arr:
+            self.insert_between(i)
+        tempOfLastList = self.deque()
+        self.insert_between(tempOfLastList)
 
 
 # at least insert five values to the queue. print queue before and after
@@ -256,16 +301,84 @@ class DoublyLinkedBase:
 
 # add your code to test first scenario here
 
+amq = ArrayModuleQueue()
+def amqInto():
+    amq.enqueue(1)
+    amq.enqueue(2)
+    amq.enqueue(3)
+    amq.enqueue(4)
+    amq.enqueue(5)
+    amq.print_queue()
+    print("")
+    amq.remove_second_element()
+    amq.insert_before_Last()
+    amq.print_queue()
+amqInto()
+
 
 # # add your code to test second scenario here
 
+# sq = SimpleQueue()
+# def sqInto():
+#     sq.enqueue(1)
+#     sq.enqueue(2)
+#     sq.enqueue(3)
+#     sq.enqueue(4)
+#     sq.enqueue(5)
+#     sq.print_queue()
+#     print("")
+#     sq.remove_second_element()
+#     sq._resize(10)
+#     sq.insert_before_Last()
+#     sq.print_queue()
+# sqInto()
 
 # # add your code to test third scenario here
 
+# cq = CircularQueue()
+# def cqInto():
+#     cq.enqueue(1)
+#     cq.enqueue(2)
+#     cq.enqueue(3)
+#     cq.enqueue(4)
+#     cq.enqueue(5)
+#     cq.print_queue()
+#     print("")
+#     cq.remove_second_element()
+#     cq._resize(10)
+#     cq.insert_before_last()
+#     cq.print_queue()
+# cqInto()
 
 # add your code to test fourth scenario here
 
+# sll = SinglyLinkedList()
+# def sllInto():
+#     sll.enqueue(1)
+#     sll.enqueue(2)
+#     sll.enqueue(3)
+#     sll.enqueue(4)
+#     sll.enqueue(5)
+#     sll.print_queue()
+#     print("")
+#     sll.remove_second_element()
+#     sll.insert_before_last()
+#     sll.print_queue()
+# sllInto()
 
 # add your code to test fifth scenario here
 
-
+# dlb = DoublyLinkedBase()
+# def dlbInto():
+#     dlb.__init__()
+#     dlb.insert_between(1)
+#     dlb.insert_between(2)
+#     dlb.insert_between(3)
+#     dlb.insert_between(4)
+#     dlb.insert_between(5)
+#     dlb.print_queue()
+#     print("")
+#     dlb.remove_second_element()
+#     dlb.insert_before_last()
+#     dlb.print_queue()
+# dlbInto()
