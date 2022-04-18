@@ -1,0 +1,91 @@
+c:-[cracker].
+
+/*
+problem: 
+    x
+   x x
+  x . x
+ x x x x 
+x x x x x 
+
+representation:
+
+    0
+   1 2 
+  3 4 5
+ 6 7 8 9 
+a b c d e
+*/
+
+puzzle:-
+  forall(
+    between(0,14,I),
+    puzzle(I)
+  ).
+
+puzzle(I):-
+  init(I,D),
+  once(solve(D,RMoves)),
+  reverse(RMoves,Moves),
+  maplist(writeln,Moves),
+  show(D),
+  replay(D,RMoves),
+  writeln(solved(I)),
+  nl,writeln('----------------------'),nl,nl.
+
+j(0,1,3).
+j(0,2,5).
+j(1,3,6).
+j(1,4,8).
+j(2,4,7).
+j(2,5,9).
+j(3,6,10).
+j(3,7,12).
+j(4,7,11).
+j(4,8,13).
+j(5,8,12).
+j(5,9,14).
+j(3,4,5).
+j(6,7,8).
+j(7,8,9).
+j(10,11,12).
+j(11,12,13).
+j(12,13,14).
+
+step(From,Over,To):-j(From,Over,To);j(To,Over,From).
+
+init(I,D):-
+  K=15,Last is K-1,
+  assertion((I>=0,I<K)),
+  findall(J,(between(0,Last,J),J=\=I),D).
+  
+move(m(From,Over,To),D1,[To|D3]):-
+  select(From,D1,D2),
+  select(Over,D2,D3),
+  step(From,Over,To),
+  not(member(To,D1)).
+   
+solve([_Last],[]):-!.
+solve(D1,[M|Moves]):-
+  move(M,D1,D2),
+  %writeln(M:D2),
+  solve(D2,Moves).
+  
+replay([_Last],[]):-!.
+replay(D1,[M|Moves]):-  
+  move(M,D1,D2),
+  !,
+  show(D2),
+  replay(D2,Moves).
+  
+show_at(I,D,X):-member(I,D)->X=x ; X='.'.
+  
+show(D):-
+   Lines=[4:0-0,3:1-2,2:3-5,1:6-9,0:10-14],
+   member(T:A-B,Lines),
+   nl,tab(T),
+   between(A,B,I),show_at(I,D,X),write(X),write(' '),
+   fail.
+show(_D):-nl.
+
+save:-tell('puzzle.txt'),puzzle,told.

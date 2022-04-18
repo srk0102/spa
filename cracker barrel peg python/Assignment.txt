@@ -1,0 +1,28 @@
+
+
+
+The Cracker Barrel Peg game is described at:
+
+https://blog.crackerbarrel.com/2021/08/13/how-to-solve-the-cracker-barrel-peg-game/
+
+Modify the Cracker Barrel Prolog program given
+
+
+to work on a smaller board with only 4 rows. Instead of looking like this:
+
+    .
+   x x
+  x x x
+ x x x x 
+x x x x x 
+ 
+the board on which your program runs, should look like this:
+
+    .
+   x x
+  x x x
+ x x x x 
+ 
+Will it still be possible to have only one peg remaining on the board, for all initial configurations? If not, give a counter-example, i.e., and initial board configuration for which your program cannot achieve this result.
+
+Submit your solution on canvas as as a self-contained .pro file, with your explanations and test output pasted as a /* .. */ comment at the end of your code.
