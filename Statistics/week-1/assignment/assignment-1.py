@@ -11,6 +11,18 @@ def sampleMean(sm, num, sof, n):
   sampleMean = pMean + ((mean-pMean)/n)
   return sampleMean
 
+def sampleVarience(sv, num, sof, n):
+  mean = sof/n
+  if(n>1):
+    pMean = (sof-num)/(n-1)
+  else:
+    pMean = 0
+  Variance = pow((num-pMean),2)/(n-1)
+  if(n>2):
+    res = (((n-1)/(n-2))*(sv)) + ((pow((mean-pMean),2))/n)
+  else:
+    res = 0
+
 #Array to store Numbers
 num = int(input("Enter Non-Negative number to calculate Mean and Variance : "))
 
@@ -22,5 +34,7 @@ while(num >=0 ):
   n += 1
   sumOfNumbers += num
   sm = sampleMean(sm, num, sumOfNumbers, n)
+  sv = sampleVarience(sv, num, sumOfNumbers, n)
   print(sm)
+  print(sv)
   num = int(input("Enter Non-Negative number to calculate Mean and Variance : "))
