@@ -3,18 +3,12 @@ print("Programming Assignment #1")
 
 #Function to solve sample mean
 def sampleMean(sm, num, sof, n):
-  mean = sof/n
-  sampleMean = sm + ((mean-sm)/n)
+  sampleMean = sm + ((num-sm)/n)
   return sampleMean
 
-def sampleVariance(sv, num, sof, n):
-  mean = sof/n
+def sampleVariance(sv, num, sof, n, sm):
   if(n>1):
-    pMean = (sof-num)/(n-1)
-  else:
-    pMean = 0
-  if(n>2):
-    res = (((n-1)/(n-2))*(sv)) + ((pow((mean-pMean),2))/n)
+    res = (((n-2)/(n-1))*(sv)) + ((pow((num-sm),2))/n)
   else:
     res = 0
   return res
@@ -30,8 +24,8 @@ sv = 0 # -> Sample Variance
 while(num >=0 ):
   n += 1
   sumOfNumbers += num
+  sv = sampleVariance(sv, num, sumOfNumbers, n, sm)
   sm = sampleMean(sm, num, sumOfNumbers, n)
-  sv = sampleVariance(sv, num, sumOfNumbers, n)
   print(sm , "======> Sample Mean")
   print(sv , "======> Sample Variance")
   num = int(input("Enter Non-Negative number to calculate Mean and Variance : "))
