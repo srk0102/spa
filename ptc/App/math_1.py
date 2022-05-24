@@ -49,7 +49,7 @@ class Math:
 
         return prod
 
-    def factors(number: int):
+    def factors(self, number: int):
         '''finds and returns list of factors for number'''
         if number <= 0:
             raise ValueError('number must be geater than zero')
