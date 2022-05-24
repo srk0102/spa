@@ -62,8 +62,3 @@ class Math:
                 factors.append(factor)
 
         return factors
-
-
-
-
-
