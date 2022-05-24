@@ -13,8 +13,8 @@ def sampleVariance(sv, num, sof, n):
     pMean = (sof-num)/(n-1)
   else:
     pMean = 0
-  if(n>2):
-    res = (((n-1)/(n-2))*(sv)) + ((pow((mean-pMean),2))/n)
+  if(n>1):
+    res = (((n-2)/(n-1))*(sv)) + ((pow((mean-pMean),2))/n)
   else:
     res = 0
   return res
